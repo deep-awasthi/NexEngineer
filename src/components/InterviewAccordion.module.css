@@ -1,0 +1,39 @@
+.wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.card {
+  border: 1px solid var(--border);
+
+  border-radius: 16px;
+
+  overflow: hidden;
+}
+
+.question {
+  width: 100%;
+
+  background: var(--surface);
+
+  color: white;
+
+  border: none;
+
+  text-align: left;
+
+  padding: 20px;
+
+  cursor: pointer;
+
+  font-size: 1rem;
+}
+
+.answer {
+  padding: 20px;
+
+  background: var(--surface-2);
+
+  color: var(--text-secondary);
+}
