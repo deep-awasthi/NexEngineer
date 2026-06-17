@@ -1,20 +1,23 @@
 "use client";
 
 import { motion } from "framer-motion";
+import Link from "next/link";
+import { Sparkles } from "lucide-react";
 import styles from "./Hero.module.css";
 
 export default function Hero() {
     return (
         <section className={styles.hero}>
             <div className={`container ${styles.content}`}>
-                <motion.p
+                <motion.div
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.5 }}
                     className={styles.badge}
                 >
-                    Software Engineering Learning Platform
-                </motion.p>
+                    <Sparkles size={14} className={styles.badgeIcon} />
+                    <span>Software Engineering Learning Platform</span>
+                </motion.div>
 
                 <motion.h1
                     initial={{ opacity: 0, y: 30 }}
@@ -48,9 +51,9 @@ export default function Hero() {
                         Start Learning
                     </a>
 
-                    <a href="/notes" className={styles.secondary}>
+                    <Link href="/notes" className={styles.secondary}>
                         Quick Revision Notes
-                    </a>
+                    </Link>
                 </motion.div>
             </div>
         </section>

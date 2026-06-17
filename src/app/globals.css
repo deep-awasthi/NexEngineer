@@ -56,7 +56,7 @@ section {
   padding: 100px 0;
 }
 
-body::before {
+.pageBackground {
   content: "";
 
   position: fixed;
@@ -70,8 +70,6 @@ body::before {
   height: 650px;
 
   border-radius: 50%;
-
-  background-image: url("/background.png");
 
   background-size: cover;
   background-position: center;
@@ -113,7 +111,7 @@ body::after {
 }
 
 @media (max-width: 768px) {
-  body::before {
+  .pageBackground {
     width: 350px;
     height: 350px;
   }

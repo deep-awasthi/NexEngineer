@@ -8,7 +8,6 @@ import {
   ChevronDown,
   Coffee,
   Brain,
-  FileText,
   Boxes,
   Container,
   Binary,
@@ -31,7 +30,6 @@ const topics = [
   { name: "Python", href: "/python", icon: Code2 },
   { name: "AI", href: "/ai", icon: Brain },
   { name: "Go", href: "/go", icon: Code2 },
-  { name: "Revision Notes", href: "/notes", icon: FileText },
 ];
 
 export default function Navbar() {

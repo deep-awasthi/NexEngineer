@@ -9,5 +9,4 @@ export const topics = [
   { name: "Python", href: "/python" },
   { name: "AI", href: "/ai" },
   { name: "Go", href: "/go" },
-  { name: "Revision Notes", href: "/notes" },
 ];

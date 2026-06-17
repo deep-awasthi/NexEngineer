@@ -1,3 +1,4 @@
+import Link from "next/link";
 import styles from "./page.module.css";
 
 const sections = [
@@ -46,11 +47,39 @@ const sections = [
       "Load Balancer Notes",
     ],
   },
+  {
+    title: "Go",
+    notes: [
+      "Goroutines Cheat Sheet",
+      "Channels Cheat Sheet",
+      "Go Syntax Revision",
+      "Context API Notes",
+    ],
+  },
+  {
+    title: "Python",
+    notes: [
+      "Generators & Iterators",
+      "Decorators Cheat Sheet",
+      "AsyncIO Cheatsheet",
+      "Virtual Envs & PIP",
+    ],
+  },
+  {
+    title: "AI",
+    notes: [
+      "Prompt Engineering Tips",
+      "RAG Pipeline Cheat Sheet",
+      "Vector DB Comparison",
+      "Model Context Protocol",
+    ],
+  },
 ];
 
 export default function NotesPage() {
   return (
     <main className={styles.page}>
+      <div className="pageBackground" style={{ backgroundImage: "url('/backgrounds/notes_icon.png')" }} />
       <div className="container">
         <h1>Quick Revision Notes</h1>
 
@@ -58,25 +87,33 @@ export default function NotesPage() {
           Fast revision guides for interviews and daily work.
         </p>
 
-        {sections.map((section) => (
-          <section
-            key={section.title}
-            className={styles.section}
-          >
-            <h2>{section.title}</h2>
+        {sections.map((section) => {
+          const sectionId = section.title.toLowerCase().replace(/[^a-z0-9]+/g, "-");
+          return (
+            <section
+              key={section.title}
+              id={sectionId}
+              className={styles.section}
+            >
+              <h2>{section.title}</h2>
 
-            <div className={styles.grid}>
-              {section.notes.map((note) => (
-                <div
-                  key={note}
-                  className={styles.card}
-                >
-                  {note}
-                </div>
-              ))}
-            </div>
-          </section>
-        ))}
+              <div className={styles.grid}>
+                {section.notes.map((note) => {
+                  const noteSlug = note.toLowerCase().replace(/[^a-z0-9]+/g, "-");
+                  return (
+                    <Link
+                      key={note}
+                      href={`/notes/${sectionId}/${noteSlug}`}
+                      className={styles.card}
+                    >
+                      {note}
+                    </Link>
+                  );
+                })}
+              </div>
+            </section>
+          );
+        })}
       </div>
     </main>
   );

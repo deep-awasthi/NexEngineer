@@ -1,101 +1,12 @@
 import { Metadata } from "next";
-
-import Roadmap from "@/components/Roadmap";
-import InterviewAccordion from "@/components/InterviewAccordion";
-import ArticleCard from "@/components/ArticleCard";
-
-import {
-  roadmap,
-  topics,
-  interviewQuestions,
-} from "@/data/java";
-
-import styles from "./page.module.css";
+import TopicPage from "@/components/TopicPage";
+import { pageData } from "@/data/java";
 
 export const metadata: Metadata = {
-  title: "Java Roadmap",
-  description:
-    "Master Java through structured learning paths, JVM internals, concurrency and interview preparation.",
+  title: pageData.title + " Roadmap",
+  description: pageData.description,
 };
 
-export default function JavaPage() {
-  return (
-    <main className={styles.page}>
-      <section className={styles.hero}>
-        <div className="container">
-          <h1>Java Roadmap</h1>
-
-          <p>
-            Learn Java from basics to
-            production-grade backend systems.
-          </p>
-        </div>
-      </section>
-
-      <section>
-        <div className="container">
-          <h2>Learning Roadmap</h2>
-
-          <Roadmap items={roadmap} />
-        </div>
-      </section>
-
-      <section>
-        <div className="container">
-          <h2>Core Topics</h2>
-          <ArticleCard
-            title="Java OOP"
-            description="Learn classes, objects, inheritance, polymorphism and abstraction."
-            href="/java/oop"
-            readTime="10 min read"
-          />
-
-          <div className={styles.grid}>
-            {topics.map((topic) => (
-              <div
-                key={topic.title}
-                className={styles.card}
-              >
-                <h3>{topic.title}</h3>
-
-                <p>{topic.description}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      <section>
-        <div className="container">
-          <h2>Interview Questions</h2>
-
-          <InterviewAccordion
-            questions={interviewQuestions}
-          />
-        </div>
-      </section>
-
-      <section>
-        <div className="container">
-          <h2>Deep Dive Articles</h2>
-
-          <div className={styles.links}>
-            <a
-              href="YOUR_MEDIUM_URL"
-              target="_blank"
-            >
-              Read Full Java Articles →
-            </a>
-
-            <a
-              href="YOUR_LINKEDIN_URL"
-              target="_blank"
-            >
-              Follow on LinkedIn →
-            </a>
-          </div>
-        </div>
-      </section>
-    </main>
-  );
+export default function Page() {
+  return <TopicPage data={pageData} />;
 }

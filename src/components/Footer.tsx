@@ -1,3 +1,4 @@
+import { FaMedium, FaLinkedin, FaGithub } from "react-icons/fa";
 import styles from "./Footer.module.css";
 
 export default function Footer() {
@@ -15,24 +16,30 @@ export default function Footer() {
             href="https://medium.com/@deepawasthi"
             target="_blank"
             rel="noreferrer"
+            className={styles.iconLink}
+            aria-label="Medium"
           >
-            Medium
+            <FaMedium size={22} />
           </a>
 
           <a
             href="https://www.linkedin.com/in/deep-awasthi/"
             target="_blank"
             rel="noreferrer"
+            className={styles.iconLink}
+            aria-label="LinkedIn"
           >
-            LinkedIn
+            <FaLinkedin size={22} />
           </a>
 
           <a
             href="https://github.com/deep-awasthi"
             target="_blank"
             rel="noreferrer"
+            className={styles.iconLink}
+            aria-label="GitHub"
           >
-            GitHub
+            <FaGithub size={22} />
           </a>
         </div>
       </div>
