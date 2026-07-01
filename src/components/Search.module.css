@@ -4,6 +4,13 @@
   width: 300px;
 }
 
+@media (max-width: 1024px) {
+  .wrapper {
+    width: 100%;
+  }
+}
+
+
 .searchBox {
   display: flex;
   align-items: center;
@@ -68,11 +75,12 @@
 
   width: 100%;
 
-  background: #111111;
+  background: var(--surface);
 
-  border: 1px solid #27272a;
+  border: 1px solid var(--border);
 
   border-radius: 18px;
+
 
   overflow: hidden;
 

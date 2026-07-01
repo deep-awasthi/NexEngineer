@@ -3,7 +3,10 @@ import Link from "next/link";
 import Image from "next/image";
 import { notFound } from "next/navigation";
 import { Sparkles, ArrowLeft, BookOpen, Terminal, CheckCircle2, AlertTriangle } from "lucide-react";
+import MediumArticleButton from "@/components/MediumArticleButton";
 import styles from "./page.module.css";
+
+
 
 export const unstable_instant = { prefetch: "static", unstable_disableValidation: true };
 
@@ -16,7 +19,9 @@ interface CheatsheetDetail {
   codeLanguage: string;
   pitfalls: string[];
   bestPractices: string[];
+  mediumUrl?: string;
 }
+
 
 const sections = [
   {
@@ -587,7 +592,20 @@ function initializeRevision() {
                 <code>{highlightCode(content.codeSnippet)}</code>
               </pre>
             </div>
+
+            {/* Further Reading & References Card */}
+            <div className={styles.sectionCard} style={{ marginTop: '24px' }}>
+              <div className={styles.cardHeader}>
+                <BookOpen size={20} className={styles.cardIcon} />
+                <h2>Further Reading & References</h2>
+              </div>
+              <div style={{ marginTop: '16px' }}>
+                <MediumArticleButton url={content.mediumUrl || `https://medium.com/search?q=${encodeURIComponent(content.title)}`} />
+              </div>
+            </div>
           </section>
+
+
 
           {/* Side Panels (Pitfalls & Best Practices) */}
           <aside className={styles.sidebar}>

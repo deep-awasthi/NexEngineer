@@ -13,7 +13,10 @@ import { pageData as lld } from "@/data/lld";
 import { pageData as python } from "@/data/python";
 import { pageData as springBoot } from "@/data/spring-boot";
 import { TopicPageData, TopicItem } from "@/components/TopicPage";
+import MediumArticleButton from "@/components/MediumArticleButton";
 import styles from "./page.module.css";
+
+
 
 const dataMap: Record<string, TopicPageData> = {
   java,
@@ -455,7 +458,15 @@ export default async function ConceptDetailPage({ params }: PageProps) {
               </ul>
             </section>
           </div>
+
+          {/* FURTHER READING & REFERENCES */}
+          <section className={styles.articleSection}>
+            <h2>Further Reading & References</h2>
+            <MediumArticleButton url={matchingTopic.mediumUrl || `https://medium.com/search?q=${encodeURIComponent(matchingTopic.title)}`} />
+          </section>
         </article>
+
+
 
         {/* BOTTOM NAV BAR */}
         <footer className={styles.blogFooter}>

@@ -19,8 +19,10 @@ export const topics = [
       "Control Flow: Loops, Conditionals, and Switch statements",
       "OOP Core: Inheritance, Polymorphism, Abstraction, and Encapsulation",
       "Classes, Interfaces, Abstract Classes, and Record Types"
-    ]
+    ],
+    mediumUrl: "https://medium.com/@deepawasthi/mastering-java-basics-and-oop-fundamentals-9a7206bb9b1f"
   },
+
   {
     title: "Collections Framework",
     description: "Master List, Set, Queue, and Map implementations along with complexity analysis.",

@@ -219,8 +219,8 @@
 /* IDE TERMINAL WINDOW */
 
 .terminalWindow {
-  background: #0d0f14;
-  border: 1px solid rgba(255, 255, 255, 0.06);
+  background: var(--terminal-bg);
+  border: 1px solid var(--border);
   border-radius: 16px;
   overflow: hidden;
   box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
@@ -228,11 +228,11 @@
 }
 
 .terminalHeader {
-  background: #141822;
+  background: var(--terminal-header);
   padding: 14px 20px;
   display: flex;
   align-items: center;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  border-bottom: 1px solid var(--border);
   position: relative;
 }
 
@@ -258,7 +258,7 @@
   margin: 0 auto;
   font-family: var(--font-mono, monospace);
   font-size: 0.85rem;
-  color: rgba(255, 255, 255, 0.4);
+  color: var(--text-secondary);
   font-weight: 500;
 }
 
@@ -266,8 +266,9 @@
   padding: 28px 24px;
   margin: 0;
   overflow-x: auto;
-  background: #0a0c10;
+  background: var(--code-bg);
 }
+
 
 .codeBlock code {
   font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;

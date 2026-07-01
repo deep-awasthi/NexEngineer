@@ -1,7 +1,7 @@
 import Image from "next/image";
 import Hero from "@/components/Hero";
 import LearningGrid from "@/components/LearningGrid";
-import FeaturedTopics from "@/components/FeaturedTopics";
+import PracticeSection from "@/components/PracticeSection";
 export default function HomePage() {
   return (
     <>
@@ -19,7 +19,7 @@ export default function HomePage() {
 
       <LearningGrid />
 
-      <FeaturedTopics />
+      <PracticeSection />
     </>
   );
 }

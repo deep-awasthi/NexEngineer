@@ -1,11 +1,12 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+
 import Link from "next/link";
 import Image from "next/image";
 import { ChevronDown } from "lucide-react";
-import InterviewAccordion from "./InterviewAccordion";
 import styles from "./TopicPage.module.css";
+
 
 export interface StatItem {
   value: string;
@@ -16,7 +17,9 @@ export interface TopicItem {
   title: string;
   description: string;
   details?: string[];
+  mediumUrl?: string;
 }
+
 
 export interface InterviewQuestionItem {
   question: string;
@@ -57,8 +60,38 @@ interface TopicPageProps {
 
 export default function TopicPage({ data }: TopicPageProps) {
   const [expandedIndices, setExpandedIndices] = useState<number[]>([]);
+  const [completedConcepts, setCompletedConcepts] = useState<Record<string, boolean>>({});
   const defaultCtaTitle = `Become Production Ready with ${data.title}`;
   const defaultCtaDesc = `Explore deep-dive concepts, real-world deployments, and industry best practices for ${data.title}.`;
+
+  const topicSlug = data.title.toLowerCase().replace(/[^a-z0-9]+/g, "-");
+
+  useEffect(() => {
+    const saved = localStorage.getItem(`progress-${topicSlug}`);
+    const timer = setTimeout(() => {
+      if (saved) {
+        try {
+          setCompletedConcepts(JSON.parse(saved));
+        } catch (e) {
+          console.error(e);
+        }
+      } else {
+        setCompletedConcepts({});
+      }
+    }, 0);
+    return () => clearTimeout(timer);
+  }, [topicSlug]);
+
+
+  const toggleComplete = (conceptSlug: string, e: React.MouseEvent) => {
+    e.stopPropagation(); // Prevent card from expanding
+    const updated = {
+      ...completedConcepts,
+      [conceptSlug]: !completedConcepts[conceptSlug],
+    };
+    setCompletedConcepts(updated);
+    localStorage.setItem(`progress-${topicSlug}`, JSON.stringify(updated));
+  };
 
   const toggleExpand = (index: number) => {
     if (expandedIndices.includes(index)) {
@@ -67,6 +100,14 @@ export default function TopicPage({ data }: TopicPageProps) {
       setExpandedIndices([...expandedIndices, index]);
     }
   };
+
+  const totalConcepts = data.topics.length;
+  const completedCount = data.topics.filter((t) => {
+    const conceptSlug = t.title.toLowerCase().replace(/[^a-z0-9]+/g, "-");
+    return completedConcepts[conceptSlug];
+  }).length;
+  const progressPercent = totalConcepts > 0 ? Math.round((completedCount / totalConcepts) * 100) : 0;
+
 
   const getBgUrl = (title: string) => {
     const t = title.toLowerCase();
@@ -135,6 +176,23 @@ export default function TopicPage({ data }: TopicPageProps) {
         </div>
       </section>
 
+      {/* STATS */}
+      {data.stats && data.stats.length > 0 && (
+        <section className={styles.statsSection}>
+          <div className="container">
+            <div className={styles.stats}>
+              {data.stats.map((stat, idx) => (
+                <div key={idx} className={styles.statCard}>
+                  <h3>{stat.value}</h3>
+                  <p>{stat.label}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+      )}
+
+
       {/* INTERACTIVE CORE CONCEPTS ROADMAP */}
       {data.topics && data.topics.length > 0 && (
         <section id="roadmap">
@@ -146,7 +204,26 @@ export default function TopicPage({ data }: TopicPageProps) {
                 Explore the most important {data.title} concepts in a structured learning path.
                 Click on each card to expand and view details.
               </p>
+
+              {/* Progress Tracker */}
+              {totalConcepts > 0 && (
+                <div className={styles.progressContainer}>
+                  <div className={styles.progressHeader}>
+                    <span>Roadmap Progress</span>
+                    <span className={styles.progressValue}>
+                      {completedCount} / {totalConcepts} ({progressPercent}%)
+                    </span>
+                  </div>
+                  <div className={styles.progressBarBg}>
+                    <div
+                      className={styles.progressBarFill}
+                      style={{ width: `${progressPercent}%` }}
+                    ></div>
+                  </div>
+                </div>
+              )}
             </div>
+
 
             <div className={styles.conceptsRoadmap}>
               {data.topics.map((topic, idx) => {
@@ -154,24 +231,50 @@ export default function TopicPage({ data }: TopicPageProps) {
                 const topicSlug = data.title.toLowerCase().replace(/[^a-z0-9]+/g, "-");
                 const conceptSlug = topic.title.toLowerCase().replace(/[^a-z0-9]+/g, "-");
                 const detailUrl = `/${topicSlug}/${conceptSlug}`;
+                const isCompleted = !!completedConcepts[conceptSlug];
 
                 return (
                   <div key={topic.title} className={styles.conceptNode}>
-                    <div className={`${styles.conceptCircle} ${isExpanded ? styles.conceptCircleActive : ""}`}>
-                      {idx + 1}
+                    <div className={`${styles.conceptCircle} ${isCompleted ? styles.conceptCircleCompleted : ""} ${isExpanded && !isCompleted ? styles.conceptCircleActive : ""}`}>
+                      {isCompleted ? (
+                        <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" strokeWidth="3" style={{ margin: "auto" }}>
+                          <polyline points="20 6 9 17 4 12" />
+                        </svg>
+                      ) : (
+                        idx + 1
+                      )}
                     </div>
 
                     <div
-                      className={`${styles.conceptCard} ${isExpanded ? styles.conceptCardActive : ""}`}
+                      className={`${styles.conceptCard} ${isCompleted ? styles.conceptCardCompleted : ""} ${isExpanded ? styles.conceptCardActive : ""}`}
                       onClick={() => toggleExpand(idx)}
                     >
                       <div className={styles.conceptHeader}>
-                        <h3>{topic.title}</h3>
+                        <div className={styles.conceptTitleArea}>
+                          <button
+                            className={`${styles.checkbox} ${
+                              isCompleted ? styles.checkboxChecked : ""
+                            }`}
+                            onClick={(e) => toggleComplete(conceptSlug, e)}
+                            title={isCompleted ? "Mark as uncompleted" : "Mark as completed"}
+                            aria-label={isCompleted ? "Mark as uncompleted" : "Mark as completed"}
+                          >
+                            {isCompleted && (
+                              <svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" strokeWidth="3">
+                                <polyline points="20 6 9 17 4 12" />
+                              </svg>
+                            )}
+                          </button>
+                          <h3 className={isCompleted ? styles.titleCompleted : ""}>
+                            {topic.title}
+                          </h3>
+                        </div>
                         <ChevronDown
                           size={20}
                           className={`${styles.conceptToggleIcon} ${isExpanded ? styles.conceptToggleIconRotated : ""}`}
                         />
                       </div>
+
 
                       {isExpanded && (
                         <div className={styles.conceptContent}>
@@ -203,26 +306,26 @@ export default function TopicPage({ data }: TopicPageProps) {
         </section>
       )}
 
-
-
-      {/* INTERVIEW QUESTIONS */}
-      {data.interviewQuestions && data.interviewQuestions.length > 0 && (
+      {/* ADDITIONAL GRIDS */}
+      {data.additionalGrids && data.additionalGrids.length > 0 && (
         <section>
           <div className="container">
-            <div className={styles.sectionHeader}>
-              <span>Interview Preparation</span>
-              <h2>Frequently Asked Questions</h2>
-              <p>
-                Prepare for {data.title} interviews with commonly asked
-                questions and detailed answers.
-              </p>
-            </div>
-            <InterviewAccordion questions={data.interviewQuestions} />
+            {data.additionalGrids.map((grid, idx) => (
+              <div key={idx} style={{ marginBottom: "60px" }}>
+                <div className={styles.sectionHeader}>
+                  <h2>{grid.title}</h2>
+                </div>
+                <div className={styles.learnGrid}>
+                  {grid.items.map((item, itemIdx) => (
+                    <div key={itemIdx}>{item}</div>
+                  ))}
+                </div>
+              </div>
+            ))}
           </div>
         </section>
-      )}
+      )}      {/* CTA */}
 
-      {/* CTA */}
       <section className={styles.cta}>
         <div className="container">
           <h2>{data.ctaTitle || defaultCtaTitle}</h2>

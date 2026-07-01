@@ -3,9 +3,12 @@
 import Link from "next/link";
 import { useState } from "react";
 import Search from "./Search";
+import ThemeToggle from "./ThemeToggle";
+
 
 // Lucide — topics without an official brand logo
-import { ChevronDown, Binary, Building2, Puzzle } from "lucide-react";
+import { ChevronDown, Binary, Building2, Puzzle, Menu, X } from "lucide-react";
+
 
 // Official brand logos
 import { DiJava } from "react-icons/di";
@@ -35,11 +38,12 @@ const topics = [
 
 export default function Navbar() {
   const [open, setOpen] = useState(false);
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   return (
     <header className={styles.navbar}>
       <div className={`container ${styles.wrapper}`}>
-        <Link href="/" className={styles.logo}>
+        <Link href="/" className={styles.logo} onClick={() => setMobileMenuOpen(false)}>
           Nex<span>Engineer</span>
         </Link>
 
@@ -83,7 +87,72 @@ export default function Navbar() {
           <Link href="/about" className={styles.navLink}>
             About
           </Link>
+
+          <ThemeToggle />
         </div>
+
+
+        {/* Mobile menu button */}
+        <button
+          className={styles.menuButton}
+          onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+          aria-label="Toggle navigation menu"
+          aria-expanded={mobileMenuOpen}
+        >
+          {mobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
+        </button>
+
+        {/* Mobile slide-down menu */}
+        {mobileMenuOpen && (
+          <div className={styles.mobileMenu}>
+            <div className={styles.mobileSearchWrapper}>
+              <Search />
+            </div>
+            <nav className={styles.mobileLinks}>
+              <div className={styles.mobileDropdownSection}>
+                <div className={styles.mobileDropdownHeader}>
+                  <span>Topics</span>
+                </div>
+                <div className={styles.mobileTopicsGrid}>
+                  {topics.map((topic) => {
+                    const Icon = topic.icon;
+
+                    return (
+                      <Link
+                        key={topic.name}
+                        href={topic.href}
+                        className={styles.mobileTopicItem}
+                        onClick={() => setMobileMenuOpen(false)}
+                      >
+                        <Icon size={16} style={{ color: topic.color }} />
+                        <span>{topic.name}</span>
+                      </Link>
+                    );
+                  })}
+                </div>
+              </div>
+              <Link
+                href="/notes"
+                className={styles.mobileNavLink}
+                onClick={() => setMobileMenuOpen(false)}
+              >
+                Notes
+              </Link>
+              <Link
+                href="/about"
+                className={styles.mobileNavLink}
+                onClick={() => setMobileMenuOpen(false)}
+              >
+                About
+              </Link>
+              <div className={styles.mobileThemeToggleWrapper}>
+                <ThemeToggle />
+                <span className={styles.mobileThemeToggleText}>Toggle Theme</span>
+              </div>
+            </nav>
+          </div>
+
+        )}
       </div>
     </header>
   );

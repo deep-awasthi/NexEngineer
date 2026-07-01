@@ -5,11 +5,12 @@
 }
 
 :root {
-  --bg: #0a0a0a;
+  --bg: #050505;
   --surface: #111111;
   --surface-2: #171717;
 
   --text: #ffffff;
+  --text-primary: #ffffff;
   --text-secondary: #a1a1aa;
 
   --border: #27272a;
@@ -17,6 +18,33 @@
   --accent: #2563eb;
 
   --container: 1200px;
+
+  /* Custom variables for theme matching */
+  --navbar-bg: rgba(10, 10, 10, 0.85);
+  --card-bg: rgba(255, 255, 255, 0.03);
+  --card-hover: rgba(255, 255, 255, 0.05);
+  --code-bg: #0a0c10;
+  --terminal-bg: #0d0f14;
+  --terminal-header: #141822;
+}
+
+[data-theme="light"] {
+  --bg: #f8fafc;
+  --surface: #ffffff;
+  --surface-2: #f1f5f9;
+
+  --text: #0f172a;
+  --text-primary: #0f172a;
+  --text-secondary: #475569;
+
+  --border: #cbd5e1;
+
+  --navbar-bg: rgba(248, 250, 252, 0.85);
+  --card-bg: #ffffff;
+  --card-hover: #f1f5f9;
+  --code-bg: #f8fafc;
+  --terminal-bg: #f1f5f9;
+  --terminal-header: #e2e8f0;
 }
 
 html {
@@ -24,14 +52,15 @@ html {
 }
 
 body {
-  background-color: #050505;
+  background-color: var(--bg);
 
-  color: white;
+  color: var(--text);
 
   position: relative;
 
   min-height: 100vh;
 }
+
 
 a {
   color: inherit;
